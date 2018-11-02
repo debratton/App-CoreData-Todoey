@@ -9,15 +9,18 @@
 import UIKit
 import CoreData
 
-class MainTVC: UITableViewController {
-
+class ItemsTVC: UITableViewController {
+    
     var itemsArray = [ToDo]()
+    var selectedCategory: Category? {
+        didSet {
+            loadItems()
+        }
+    }
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //let request: NSFetchRequest<ToDo> = ToDo.fetchRequest()
-        loadItems()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -68,6 +71,15 @@ class MainTVC: UITableViewController {
             saveItems()
         }
     }
+    
+    func presentAlert(alert:String) {
+        let alertVC = UIAlertController(title: "Error", message: alert, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            alertVC.dismiss(animated: true, completion: nil)
+        }
+        alertVC.addAction(okAction)
+        present(alertVC, animated: true, completion: nil)
+    }
    
     @IBAction func addToDoBtnPressed(_ sender: UIBarButtonItem) {
         // HAVE TO DECLARE VARIABLE TO HOLD THE TEXT FIELD
@@ -76,20 +88,25 @@ class MainTVC: UITableViewController {
         let alert = UIAlertController(title: "Add New ToDoey", message: "", preferredStyle: .alert)
         // ADD TITLE AND THIS IS WHERE YOU HAVE TO ADD PRINT AND APPEND TO ARRAY
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            let newToDo = ToDo(context: self.context)
-            if let newItem = textField.text {
-                newToDo.title = newItem
-                newToDo.done = false
-                self.itemsArray.append(newToDo)
-                self.saveItems()
+            if textField.text != "" {
+                let newToDo = ToDo(context: self.context)
+                if let newItem = textField.text {
+                    newToDo.title = newItem
+                    newToDo.done = false
+                    newToDo.parentCategory = self.selectedCategory
+                    self.itemsArray.append(newToDo)
+                    self.saveItems()
+                }
+            } else {
+                self.presentAlert(alert: "You cannot add a blank item!")
             }
         }
+        alert.addAction(action)
         // ADD TEXT BOX
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
             textField = alertTextField
         }
-        alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
     
@@ -114,8 +131,34 @@ class MainTVC: UITableViewController {
 //    }
     // REFACTOR TO ALL CALLS FROM MULTIPLE PLACES
     //func loadItems(request: NSFetchRequest<ToDo>)
-    func loadItems(request: NSFetchRequest<ToDo> = ToDo.fetchRequest()) {
-        //let request: NSFetchRequest<ToDo> = ToDo.fetchRequest()
+    // Updated so that if you don't pass a request it brings back all results
+//    func loadItems(request: NSFetchRequest<ToDo> = ToDo.fetchRequest()) {
+//        let request: NSFetchRequest<ToDo> = ToDo.fetchRequest()
+//
+//        //let predicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+//       // request.predicate = predicate
+//        do {
+//            itemsArray = try context.fetch(request)
+//        } catch {
+//            print("Error Fetching Data: \(error.localizedDescription)")
+//        }
+//        tableView.reloadData()
+//    }
+    
+    func loadItems(request: NSFetchRequest<ToDo> = ToDo.fetchRequest(), predicate: NSPredicate? = nil) {
+        let request: NSFetchRequest<ToDo> = ToDo.fetchRequest()
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+//        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, predicate])
+//
+//        request.predicate = compoundPredicate
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
         do {
             itemsArray = try context.fetch(request)
         } catch {
@@ -128,7 +171,7 @@ class MainTVC: UITableViewController {
 //MARK: - Search Bar Methods
 // WE CAN EITHER DO THIS OR JUST ADD UISearchBarDelegate to top and
 // ADD FUNCTION INSIDE THE MainTVC Class
-extension MainTVC: UISearchBarDelegate {
+extension ItemsTVC: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request: NSFetchRequest<ToDo> = ToDo.fetchRequest()
         // Optional text
@@ -139,7 +182,8 @@ extension MainTVC: UISearchBarDelegate {
             //request.predicate = predicate
             //let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
             // request.sortDescriptors = [sortDescriptor]  HAVE TO PUT IN ARRAY
-            request.predicate = NSPredicate(format: "title CONTAINS %@", searchText)
+            //request.predicate = NSPredicate(format: "title CONTAINS %@", searchText)
+            let predicate = NSPredicate(format: "title CONTAINS %@", searchText)
             //HAVE TO ADD TO ARRAY AFTER REFACTORING
             request.sortDescriptors  = [NSSortDescriptor(key: "title", ascending: true)]
 
@@ -149,7 +193,8 @@ extension MainTVC: UISearchBarDelegate {
 //                print("Error Fetching Data: \(error.localizedDescription)")
 //            }
             // REFACTOR ABOVE
-            loadItems(request: request)
+            //loadItems(request: request)
+            loadItems(request: request, predicate: predicate)
             
         }
     }
@@ -163,10 +208,15 @@ extension MainTVC: UISearchBarDelegate {
                     searchBar.resignFirstResponder()
                 }
             } else {
+//                let request: NSFetchRequest<ToDo> = ToDo.fetchRequest()
+//                request.predicate = NSPredicate(format: "title CONTAINS %@", searchText)
+//                request.sortDescriptors  = [NSSortDescriptor(key: "title", ascending: true)]
+//                loadItems(request: request)
                 let request: NSFetchRequest<ToDo> = ToDo.fetchRequest()
-                request.predicate = NSPredicate(format: "title CONTAINS %@", searchText)
+                let predicate = NSPredicate(format: "title CONTAINS %@", searchText)
                 request.sortDescriptors  = [NSSortDescriptor(key: "title", ascending: true)]
-                loadItems(request: request)
+                loadItems(request: request, predicate: predicate)
+                
             }
         }
     }

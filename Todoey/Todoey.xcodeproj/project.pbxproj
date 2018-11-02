@@ -7,22 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		902FB1BA218B568400753C0D /* CategoriesTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 902FB1B9218B568400753C0D /* CategoriesTVC.swift */; };
 		90D534812188E64A00D71B42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D534802188E64A00D71B42 /* AppDelegate.swift */; };
 		90D534862188E64A00D71B42 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90D534842188E64A00D71B42 /* Main.storyboard */; };
 		90D534882188E64D00D71B42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90D534872188E64D00D71B42 /* Assets.xcassets */; };
 		90D5348B2188E64D00D71B42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90D534892188E64D00D71B42 /* LaunchScreen.storyboard */; };
-		90D534932188E73500D71B42 /* MainTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D534922188E73500D71B42 /* MainTVC.swift */; };
+		90D534932188E73500D71B42 /* ItemsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D534922188E73500D71B42 /* ItemsTVC.swift */; };
 		90E0B20A218A2A49009720D7 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 90E0B208218A2A49009720D7 /* DataModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		902FB1B9218B568400753C0D /* CategoriesTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesTVC.swift; sourceTree = "<group>"; };
 		90D5347D2188E64A00D71B42 /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90D534802188E64A00D71B42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		90D534852188E64A00D71B42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90D534872188E64D00D71B42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		90D5348A2188E64D00D71B42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		90D5348C2188E64D00D71B42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		90D534922188E73500D71B42 /* MainTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTVC.swift; sourceTree = "<group>"; };
+		90D534922188E73500D71B42 /* ItemsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTVC.swift; sourceTree = "<group>"; };
 		90E0B209218A2A49009720D7 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,7 +73,8 @@
 		90D534942188F0DB00D71B42 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				90D534922188E73500D71B42 /* MainTVC.swift */,
+				902FB1B9218B568400753C0D /* CategoriesTVC.swift */,
+				90D534922188E73500D71B42 /* ItemsTVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -163,7 +166,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				90E0B20A218A2A49009720D7 /* DataModel.xcdatamodeld in Sources */,
-				90D534932188E73500D71B42 /* MainTVC.swift in Sources */,
+				902FB1BA218B568400753C0D /* CategoriesTVC.swift in Sources */,
+				90D534932188E73500D71B42 /* ItemsTVC.swift in Sources */,
 				90D534812188E64A00D71B42 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
